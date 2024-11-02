@@ -10,11 +10,14 @@ import Search from './assets/Search.png';
 import Chart from './assets/Chart.png';
 import Folder from './assets/Folder.png';
 import Setting from './assets/Setting.png';
-import Student from './StudentDetails';
 import MarksUpload from './Teacher/MarksUpload';
 import AttendanceUpload from './Teacher/AttendanceUpload';
 import ViewMarks from './Teacher/ViewMarks';
 import ViewAttendance from './Teacher/ViewAttendance';
+import Notifications from './Admin/Notifications';
+import StudentDetails from './Admin/StudentDetails';
+import TeacherDetails from './Admin/TeacherDetails';
+import ViewStudentAttendance from './Student/ViewStudentAttendance';
 
 const SideBar = () => {
   const { role } = useContext(UserContext);
@@ -28,7 +31,7 @@ const SideBar = () => {
       { title: "Events", src: Chat },
       { title: "Accounts", src: User, gap: true },
       { title: "Students", src: Calendar },
-      { title: "Teacher", src: Search },
+      { title: "Teacher Details", src: Search },
       { title: "Analytics", src: Chart },
       { title: "Attendance", src: Folder, gap: true },
       { title: "Notification", src: Setting },
@@ -40,12 +43,12 @@ const SideBar = () => {
       { title: "View Marks", src: Setting },
     ],
     student: [
-      { title: "Attendance", src: Folder },
+      { title: "Attendance Details", src: Folder },
       { title: "Marks", src: Setting },
     ],
   };
 
-  const Menus = menusByRole["teacher"] || []; // Select the menu items based on role
+  const Menus = menusByRole["student"] || []; // Select the menu items based on role
 
   const handleMenuClick = (title) => {
     setSelectedMenu(title);
@@ -93,11 +96,12 @@ const SideBar = () => {
             {selectedMenu === "Dashboard" && "This is the Dashboard content."}
             {selectedMenu === "Events" && "This is the Events content."}
             {selectedMenu === "Accounts" && "This is the Accounts content."}
-            {selectedMenu === "Students" && <Student />}
-            {selectedMenu === "Teacher" && "This is the Teacher content."}
+            {selectedMenu === "Students" && <StudentDetails />}
+            {selectedMenu === "Teacher Details" && <TeacherDetails/> }
             {selectedMenu === "Analytics" && "This is the Analytics content."}
             {selectedMenu === "Attendance" && <AttendanceUpload /> }
-            {selectedMenu === "Notification" && "This is the Notification content."}
+            {selectedMenu === "Attendance Details" && <ViewStudentAttendance /> }
+            {selectedMenu === "Notification" && <Notifications/>}
             {selectedMenu === "Marks" && <MarksUpload />}
             {selectedMenu === "View Marks" && <ViewMarks />}
             {selectedMenu === "View Attendance" && <ViewAttendance />}

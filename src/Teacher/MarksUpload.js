@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MarksUpload = () => {
   const [assessmentType, setAssessmentType] = useState('');
@@ -9,10 +11,13 @@ const MarksUpload = () => {
     setFile(event.target.files[0]);
   };
 
-  // Function to handle form submission
+  // Function to handle form submission for upload
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!file) return alert("Please upload a file");
+    if (!file || !assessmentType) {
+      toast.error("Please select an assessment type and upload a file");
+      return;
+    }
 
     const formData = new FormData();
     formData.append('assessmentType', assessmentType);
@@ -23,13 +28,46 @@ const MarksUpload = () => {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error('Error uploading file:', error));
+      .then((data) => {
+        toast.success("File uploaded successfully");
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error uploading file:', error);
+        toast.error("Error uploading file");
+      });
+  };
+
+  // Function to handle form submission for update
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    if (!file || !assessmentType) {
+      toast.error("Please select an assessment type and upload a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('assessmentType', assessmentType);
+    formData.append('file', file);
+
+    fetch('/api/update-marks', {
+      method: 'PUT',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success("Marks updated successfully");
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error updating marks:', error);
+        toast.error("Error updating marks");
+      });
   };
 
   // Function to download the template
   const downloadTemplate = () => {
-    const csvContent = `data:text/csv;charset=utf-8,Roll No,Subject,Marks\n\n`; // Default headers with empty rows
+    const csvContent = `data:text/csv;charset=utf-8,StudentRegNo,Telugu,Hindi,English,Mathematics,Physics,Biology,Social\n\n`; // Default headers
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -41,6 +79,8 @@ const MarksUpload = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg sm:p-8">
+      <ToastContainer  autoClose={3000} />
+      
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Upload Student Marks</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -91,6 +131,14 @@ const MarksUpload = () => {
           className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
         >
           Upload
+        </button>
+
+        <button
+          type="button"
+          onClick={handleUpdate}
+          className="w-full bg-yellow-500 text-white font-bold py-2 rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition duration-200"
+        >
+          Update
         </button>
       </form>
     </div>
