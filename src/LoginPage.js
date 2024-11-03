@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 
+
 const LoginPage = () => {
   const { setRole } = useContext(UserContext);
   const [localRole, setLocalRole] = useState("");

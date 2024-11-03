@@ -56,7 +56,7 @@ const SideBar = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className='p-8 flex justify-center bg-dark-purple text-white'>
+      <div className='p-4 flex justify-center bg-dark-purple text-white'>
         <h1 className='text-5xl '>Sacred Heart High School</h1>
       </div>
       <div className="flex flex-1">
